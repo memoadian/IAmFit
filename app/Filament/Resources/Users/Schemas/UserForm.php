@@ -33,7 +33,7 @@ class UserForm
                     ->placeholder('Sin verificar'),
                 Toggle::make('is_admin')
                     ->label('Administrador')
-                    ->helperText('Acceso al panel /admin.')
+                    ->helperText('Acceso al panel de administración (raíz del sitio).')
                     ->default(false),
             ]);
     }

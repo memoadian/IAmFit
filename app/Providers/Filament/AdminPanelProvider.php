@@ -26,7 +26,8 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            // El panel vive en la raíz del sitio (http://localhost:8001/).
+            ->path('')
             ->brandName('IAm-fit Admin')
             ->login()
             ->colors([

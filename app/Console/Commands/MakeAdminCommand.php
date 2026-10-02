@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Console\Command;
 
 /**
- * Otorga o revoca acceso al panel Filament (/admin).
+ * Otorga o revoca acceso al panel Filament (raíz del sitio).
  *
  *   php artisan iamfit:make-admin memo@example.com
  *   php artisan iamfit:make-admin memo@example.com --revoke
@@ -33,8 +33,8 @@ class MakeAdminCommand extends Command
         $user->save();
 
         $this->info($user->is_admin
-            ? "{$email} ya tiene acceso al panel /admin."
-            : "Se revocó el acceso de {$email} al panel /admin.");
+            ? "{$email} ya tiene acceso al panel de administración."
+            : "Se revocó el acceso de {$email} al panel de administración.");
 
         return self::SUCCESS;
     }

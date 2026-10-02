@@ -28,21 +28,21 @@ class AdminPanelTest extends TestCase
 
     public function test_guests_are_redirected_to_the_panel_login(): void
     {
-        $this->get('/admin')->assertRedirect('/admin/login');
+        $this->get('/')->assertRedirect('/login');
     }
 
     public function test_admins_can_access_the_panel(): void
     {
         $admin = User::factory()->create(['is_admin' => true]);
 
-        $this->actingAs($admin)->get('/admin')->assertOk();
+        $this->actingAs($admin)->get('/')->assertOk();
     }
 
     public function test_non_admin_users_are_forbidden(): void
     {
         $user = User::factory()->create(['is_admin' => false]);
 
-        $this->actingAs($user)->get('/admin')->assertForbidden();
+        $this->actingAs($user)->get('/')->assertForbidden();
     }
 
     public function test_admin_resource_pages_render(): void

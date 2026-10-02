@@ -29,7 +29,7 @@ docker compose exec pgsql psql -U iamfit -d iamfit -c "CREATE DATABASE iamfit_te
 
 ## Panel de administración (Filament)
 
-- URL: **http://localhost:8001/admin** (login con sesión web, separado de los
+- URL: **http://localhost:8001/** (login con sesión web, separado de los
   tokens Sanctum de la app Android).
 - El acceso se controla con `users.is_admin` y la interfaz `FilamentUser` del
   modelo `User`. Un usuario sin `is_admin` recibe `403`.
