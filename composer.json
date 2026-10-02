@@ -2,11 +2,18 @@
     "$schema": "https://getcomposer.org/schema.json",
     "name": "iamfit/backend",
     "type": "project",
-    "description": "API backend de IAm-fit: nutrición (catálogo + diario) y entrenamiento (rutinas + consejo de IA).",
-    "keywords": ["laravel", "iamfit", "api", "nutrition", "training"],
+    "description": "API backend de IAm-fit: nutrici\u00f3n (cat\u00e1logo + diario) y entrenamiento (rutinas + consejo de IA).",
+    "keywords": [
+        "laravel",
+        "iamfit",
+        "api",
+        "nutrition",
+        "training"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "filament/filament": "^5.9",
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1"
@@ -51,7 +58,8 @@
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan filament:upgrade"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"

@@ -28,9 +28,9 @@ class DatabaseSeeder extends Seeder
      */
     private function seedDemoData(): void
     {
-        $user = User::firstOrCreate(
+        $user = User::updateOrCreate(
             ['email' => 'demo@iamfit.local'],
-            ['name' => 'Demo', 'password' => 'password'],
+            ['name' => 'Demo', 'password' => 'password', 'is_admin' => true],
         );
 
         $user->profile()->updateOrCreate([], [

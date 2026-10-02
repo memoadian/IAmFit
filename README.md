@@ -27,6 +27,37 @@ docker compose exec pgsql psql -U iamfit -d iamfit -c "CREATE DATABASE iamfit_te
 `./iamfit artisan …`, `./iamfit composer …`, `./iamfit tinker`, `./iamfit test`,
 `./iamfit pint app`, `./iamfit psql`, `./iamfit shell`.
 
+## Panel de administración (Filament)
+
+- URL: **http://localhost:8001/admin** (login con sesión web, separado de los
+  tokens Sanctum de la app Android).
+- El acceso se controla con `users.is_admin` y la interfaz `FilamentUser` del
+  modelo `User`. Un usuario sin `is_admin` recibe `403`.
+- Para dar o quitar acceso:
+
+  ```bash
+  ./iamfit artisan iamfit:make-admin correo@ejemplo.com
+  ./iamfit artisan iamfit:make-admin correo@ejemplo.com --revoke
+  ```
+
+  En local, el usuario demo (`demo@iamfit.local` / `password`) se siembra como
+  administrador.
+
+Recursos disponibles:
+
+| Recurso | Qué permite |
+| --- | --- |
+| Alimentos | Curar el catálogo, crear/editar y **verificar** los estimados por IA (badge con pendientes) |
+| Porciones | Gestionar las porciones legibles de cada alimento (relation manager) |
+| Búsquedas IA | Log de enriquecimientos (`ai_food_lookups`), solo lectura |
+| Ejercicios / Músculos | Catálogo de entrenamiento |
+| Usuarios | `is_admin`, datos y contraseña (no puedes borrarte a ti mismo) |
+
+Estilo: Filament usa **Tailwind CSS v4** internamente, así que no hay un cambio de
+framework. Se personaliza con `->colors()`, `->brandName()` y demás opciones del
+panel en `app/Providers/Filament/AdminPanelProvider.php`; para reglas de Tailwind
+propias se crea un *custom theme* de Filament. Ahora mismo no hay theme a medida.
+
 ## IA
 
 Portada de `inmuebles`: `App\Contracts\AiChatProvider` → `App\Services\Ai\GroqChatProvider`
