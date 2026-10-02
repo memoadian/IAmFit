@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# Wrapper mínimo estilo Sail para ejecutar comandos dentro del contenedor.
+#   ./iamfit up -d
+#   ./iamfit artisan migrate
+#   ./iamfit composer require laravel/sanctum
+#   ./iamfit tinker
+set -euo pipefail
+
+COMPOSE="docker compose"
+SERVICE="iamfit-app"
+
+case "${1:-}" in
+    ""|up|down|build|ps|logs|restart|stop|start)
+        $COMPOSE "$@"
+        ;;
+    artisan|art)
+        shift
+        $COMPOSE exec -u sail "$SERVICE" php artisan "$@"
+        ;;
+    composer)
+        shift
+        $COMPOSE exec -u sail "$SERVICE" composer "$@"
+        ;;
+    tinker)
+        $COMPOSE exec -u sail "$SERVICE" php artisan tinker
+        ;;
+    test)
+        shift
+        $COMPOSE exec -u sail "$SERVICE" php artisan test "$@"
+        ;;
+    pint)
+        shift
+        $COMPOSE exec -u sail "$SERVICE" ./vendor/bin/pint "$@"
+        ;;
+    psql)
+        $COMPOSE exec pgsql psql -U "${DB_USERNAME:-iamfit}" "${DB_DATABASE:-iamfit}"
+        ;;
+    shell|bash)
+        $COMPOSE exec -u sail "$SERVICE" bash
+        ;;
+    *)
+        $COMPOSE exec -u sail "$SERVICE" "$@"
+        ;;
+esac
