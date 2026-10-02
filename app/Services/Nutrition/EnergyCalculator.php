@@ -2,6 +2,8 @@
 
 namespace App\Services\Nutrition;
 
+use App\Enums\Goal;
+use App\Enums\Sex;
 use App\Models\Profile;
 
 /**
@@ -17,20 +19,13 @@ class EnergyCalculator
 {
     private const KCAL_PER_KG = 7700;
 
-    /** Ritmo por defecto (kg/semana) cuando el perfil no especifica uno. */
-    private const DEFAULT_RATE = [
-        'lose' => -0.5,
-        'maintain' => 0.0,
-        'gain' => 0.25,
-    ];
-
     public function bmr(Profile $profile, float $weightKg): float
     {
         $base = 10 * $weightKg
             + 6.25 * $profile->height_cm
             - 5 * $profile->ageYears();
 
-        $sexOffset = $profile->sex === 'male' ? 5 : -161;
+        $sexOffset = $profile->sex === Sex::Male ? 5 : -161;
 
         return round($base + $sexOffset, 0);
     }
@@ -52,8 +47,7 @@ class EnergyCalculator
         $tdee = $this->tdee($profile, $weightKg);
 
         $rate = $profile->goal_rate_kg_per_week
-            ?? self::DEFAULT_RATE[$profile->goal]
-            ?? 0.0;
+            ?? $profile->goal->defaultRateKgPerWeek();
 
         $dailyAdjustment = $rate * self::KCAL_PER_KG / 7;
         // No bajar de un piso razonable respecto al BMR aunque el ritmo sea agresivo.
@@ -67,7 +61,7 @@ class EnergyCalculator
             'age' => $profile->ageYears(),
             'bmr' => $this->bmr($profile, $weightKg),
             'tdee' => $tdee,
-            'goal' => $profile->goal,
+            'goal' => $profile->goal->value,
             'rate_kg_per_week' => round($rate, 2),
             'target_kcal' => $targetKcal,
             'macros' => $this->macros($targetKcal, $weightKg),

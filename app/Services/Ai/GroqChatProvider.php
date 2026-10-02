@@ -28,7 +28,7 @@ class GroqChatProvider implements AiChatProvider
         if (! $apiKey) {
             throw new AiException(
                 'GROQ_API_KEY no está configurado.',
-                502,
+                503,
                 'La IA no está disponible por el momento.',
             );
         }

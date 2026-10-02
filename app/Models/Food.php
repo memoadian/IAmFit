@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\FoodSource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,8 +15,6 @@ class Food extends Model
     // "food" es incontable en inglés; el inflector no lo pluraliza a "foods".
     protected $table = 'foods';
 
-    public const SOURCES = ['off', 'usda', 'ai', 'manual'];
-
     protected $fillable = [
         'name', 'brand', 'barcode', 'source', 'external_id', 'locale',
         'kcal', 'protein_g', 'carb_g', 'fat_g', 'fiber_g', 'sugar_g',
@@ -26,6 +25,7 @@ class Food extends Model
     protected function casts(): array
     {
         return [
+            'source' => FoodSource::class,
             'kcal' => 'float',
             'protein_g' => 'float',
             'carb_g' => 'float',

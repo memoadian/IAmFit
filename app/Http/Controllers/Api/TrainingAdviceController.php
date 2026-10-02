@@ -29,8 +29,10 @@ class TrainingAdviceController extends Controller
         }
 
         return response()->json([
-            'advice' => $advice->advice,
-            'generated_at' => $advice->created_at,
+            'data' => [
+                'advice' => $advice->advice,
+                'generated_at' => $advice->created_at,
+            ],
         ]);
     }
 }

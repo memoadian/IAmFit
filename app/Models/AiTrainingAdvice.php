@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AiTrainingAdvice extends Model
 {
+    // El inflector trata "advice" como incontable; forzamos el nombre real.
+    protected $table = 'ai_training_advices';
+
     protected $fillable = [
         'user_id',
         'routine_id',

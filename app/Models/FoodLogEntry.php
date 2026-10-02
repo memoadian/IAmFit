@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
+use App\Enums\MealType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FoodLogEntry extends Model
 {
-    public const MEALS = ['breakfast', 'lunch', 'dinner', 'snack'];
-
     protected $fillable = [
         'user_id',
         'food_id',
@@ -27,6 +26,7 @@ class FoodLogEntry extends Model
     {
         return [
             'consumed_on' => 'date',
+            'meal' => MealType::class,
             'quantity' => 'float',
             'grams' => 'float',
             'kcal' => 'float',

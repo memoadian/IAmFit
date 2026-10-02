@@ -2,15 +2,19 @@
 
 namespace App\Models;
 
+use App\Enums\MuscleGroup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Muscle extends Model
 {
-    public const GROUPS = ['chest', 'back', 'shoulders', 'arms', 'legs', 'core'];
-
     protected $fillable = ['slug', 'name', 'group'];
+
+    protected function casts(): array
+    {
+        return ['group' => MuscleGroup::class];
+    }
 
     public function primaryExercises(): HasMany
     {

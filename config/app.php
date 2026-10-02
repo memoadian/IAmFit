@@ -82,6 +82,12 @@ return [
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 
+    /*
+    | Zona horaria por defecto del usuario cuando el cliente no la envía.
+    | El backend calcula los "días locales" con esta zona, no con la del servidor.
+    */
+    'user_timezone' => env('APP_USER_TIMEZONE', 'UTC'),
+
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
 
     /*

@@ -26,8 +26,10 @@ class AuthController extends Controller
         ]);
 
         return response()->json([
-            'user' => $this->userPayload($user),
-            'token' => $user->createToken($data['device_name'] ?? 'app')->plainTextToken,
+            'data' => [
+                'user' => $this->userPayload($user),
+                'token' => $user->createToken($data['device_name'] ?? 'app')->plainTextToken,
+            ],
         ], 201);
     }
 
@@ -48,8 +50,10 @@ class AuthController extends Controller
         }
 
         return response()->json([
-            'user' => $this->userPayload($user),
-            'token' => $user->createToken($data['device_name'] ?? 'app')->plainTextToken,
+            'data' => [
+                'user' => $this->userPayload($user),
+                'token' => $user->createToken($data['device_name'] ?? 'app')->plainTextToken,
+            ],
         ]);
     }
 
@@ -62,7 +66,7 @@ class AuthController extends Controller
 
     public function me(Request $request)
     {
-        return response()->json(['user' => $this->userPayload($request->user())]);
+        return response()->json(['data' => ['user' => $this->userPayload($request->user())]]);
     }
 
     private function userPayload(User $user): array

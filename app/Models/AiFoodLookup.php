@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Enums\LookupStatus;
+use App\Enums\ResolvedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AiFoodLookup extends Model
 {
-    public const STATUSES = ['pending', 'processing', 'done', 'failed'];
-
     protected $fillable = [
         'query',
         'query_hash',
@@ -26,6 +26,8 @@ class AiFoodLookup extends Model
     {
         return [
             'raw' => 'array',
+            'status' => LookupStatus::class,
+            'resolved_by' => ResolvedBy::class,
         ];
     }
 

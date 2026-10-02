@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Enums\LookupStatus;
 use App\Models\AiFoodLookup;
 use App\Models\Food;
 use App\Services\Nutrition\NutritionFacts;
@@ -30,7 +31,7 @@ class ResolveFoodLookup implements ShouldQueue
     {
         $record = AiFoodLookup::find($this->lookupId);
 
-        if (! $record || $record->status === 'done') {
+        if (! $record || $record->status === LookupStatus::Done) {
             return;
         }
 

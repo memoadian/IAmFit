@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileRequest;
+use App\Services\Time\LocalDay;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -13,8 +14,10 @@ class ProfileController extends Controller
         $profile = $request->user()->profile;
 
         return response()->json([
-            'profile' => $profile,
-            'latest_weight_kg' => $request->user()->latestWeightKg(),
+            'data' => [
+                'profile' => $profile,
+                'latest_weight_kg' => $request->user()->latestWeightKg(),
+            ],
         ]);
     }
 
@@ -29,14 +32,16 @@ class ProfileController extends Controller
         if (! empty($data['weight_kg']) && $user->bodyWeightEntries()->doesntExist()) {
             $user->bodyWeightEntries()->create([
                 'weight_kg' => $data['weight_kg'],
-                'measured_on' => today(),
+                'measured_on' => LocalDay::today($user, $request->input('timezone')),
                 'source' => 'manual',
             ]);
         }
 
         return response()->json([
-            'profile' => $profile->fresh(),
-            'latest_weight_kg' => $user->latestWeightKg(),
+            'data' => [
+                'profile' => $profile->fresh(),
+                'latest_weight_kg' => $user->latestWeightKg(),
+            ],
         ]);
     }
 }

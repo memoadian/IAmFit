@@ -6,6 +6,7 @@ use App\Models\Exercise;
 use App\Models\Muscle;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class RoutineTest extends TestCase
@@ -20,7 +21,7 @@ class RoutineTest extends TestCase
         );
 
         return Exercise::create([
-            'slug' => \Illuminate\Support\Str::slug($name),
+            'slug' => Str::slug($name),
             'name' => $name,
             'primary_muscle_id' => $muscle->id,
             'equipment' => 'barbell',

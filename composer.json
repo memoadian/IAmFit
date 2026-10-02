@@ -1,9 +1,9 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "iamfit/backend",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "API backend de IAm-fit: nutrición (catálogo + diario) y entrenamiento (rutinas + consejo de IA).",
+    "keywords": ["laravel", "iamfit", "api", "nutrition", "training"],
     "license": "MIT",
     "require": {
         "php": "^8.2",

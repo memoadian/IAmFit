@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\Equipment;
+use App\Enums\MuscleGroup;
 use App\Http\Controllers\Controller;
 use App\Models\Exercise;
-use App\Models\Muscle;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -14,8 +15,8 @@ class ExerciseController extends Controller
     {
         $data = $request->validate([
             'muscle' => ['nullable', 'string', 'exists:muscles,slug'],
-            'group' => ['nullable', Rule::in(Muscle::GROUPS)],
-            'equipment' => ['nullable', Rule::in(Exercise::EQUIPMENT)],
+            'group' => ['nullable', Rule::enum(MuscleGroup::class)],
+            'equipment' => ['nullable', Rule::enum(Equipment::class)],
             'q' => ['nullable', 'string', 'max:80'],
         ]);
 

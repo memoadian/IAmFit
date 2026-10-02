@@ -25,15 +25,19 @@ class FoodController extends Controller
 
         if ($result['status'] === 'found') {
             return response()->json([
-                'status' => 'found',
-                'food' => new FoodResource($result['food']->load('portions')),
+                'data' => [
+                    'status' => 'found',
+                    'food' => new FoodResource($result['food']->load('portions')),
+                ],
             ]);
         }
 
         return response()->json([
-            'status' => 'pending',
-            'lookup_id' => $result['lookup_id'],
-            'message' => 'Estamos buscando ese alimento. Vuelve a consultar en unos segundos.',
+            'data' => [
+                'status' => 'pending',
+                'lookup_id' => $result['lookup_id'],
+                'message' => 'Estamos buscando ese alimento. Vuelve a consultar en unos segundos.',
+            ],
         ], 202);
     }
 
@@ -44,11 +48,13 @@ class FoodController extends Controller
         abort_if($record === null, 404);
 
         return response()->json([
-            'status' => $record->status,
-            'resolved_by' => $record->resolved_by,
-            'food' => $record->food
-                ? new FoodResource($record->food->load('portions'))
-                : null,
+            'data' => [
+                'status' => $record->status,
+                'resolved_by' => $record->resolved_by,
+                'food' => $record->food
+                    ? new FoodResource($record->food->load('portions'))
+                    : null,
+            ],
         ]);
     }
 

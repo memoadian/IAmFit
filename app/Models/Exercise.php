@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\Equipment;
+use App\Enums\Mechanic;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,12 +11,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Exercise extends Model
 {
-    public const EQUIPMENT = [
-        'barbell', 'dumbbell', 'machine', 'cable', 'bodyweight', 'kettlebell', 'band', 'other',
-    ];
-
-    public const MECHANICS = ['compound', 'isolation'];
-
     protected $fillable = [
         'slug', 'name', 'description', 'primary_muscle_id',
         'equipment', 'mechanic', 'created_by', 'is_public',
@@ -22,7 +18,11 @@ class Exercise extends Model
 
     protected function casts(): array
     {
-        return ['is_public' => 'boolean'];
+        return [
+            'equipment' => Equipment::class,
+            'mechanic' => Mechanic::class,
+            'is_public' => 'boolean',
+        ];
     }
 
     public function primaryMuscle(): BelongsTo

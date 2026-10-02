@@ -20,8 +20,8 @@ class AuthTest extends TestCase
         ]);
 
         $response->assertCreated()
-            ->assertJsonStructure(['user' => ['id', 'name', 'email', 'has_profile'], 'token'])
-            ->assertJsonPath('user.has_profile', false);
+            ->assertJsonStructure(['data' => ['user' => ['id', 'name', 'email', 'has_profile'], 'token']])
+            ->assertJsonPath('data.user.has_profile', false);
 
         $this->assertDatabaseHas('users', ['email' => 'memo@example.com']);
     }
@@ -42,6 +42,6 @@ class AuthTest extends TestCase
 
         $this->actingAs($user)->getJson('/api/me')
             ->assertOk()
-            ->assertJsonPath('user.email', $user->email);
+            ->assertJsonPath('data.user.email', $user->email);
     }
 }

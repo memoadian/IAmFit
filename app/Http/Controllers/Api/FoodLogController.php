@@ -8,17 +8,27 @@ use App\Models\Food;
 use App\Models\FoodLogEntry;
 use App\Models\FoodPortion;
 use App\Services\Nutrition\EnergyCalculator;
+use App\Services\Time\LocalDay;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
 
 class FoodLogController extends Controller
 {
     public function index(Request $request, EnergyCalculator $calculator)
     {
-        $date = $request->date('date') ?? today();
+        $request->validate([
+            'date' => ['nullable', 'date'],
+            'timezone' => ['nullable', 'timezone'],
+        ]);
 
-        $entries = $request->user()->foodLogEntries()
+        $user = $request->user();
+        $date = $request->query('date')
+            ? CarbonImmutable::parse($request->query('date'), LocalDay::timezone($user, $request->query('timezone')))
+            : LocalDay::today($user, $request->query('timezone'));
+
+        $entries = $user->foodLogEntries()
             ->with('food:id,name,brand,source')
-            ->whereDate('consumed_on', $date)
+            ->whereDate('consumed_on', $date->toDateString())
             ->orderBy('created_at')
             ->get();
 
@@ -30,24 +40,28 @@ class FoodLogController extends Controller
         ];
 
         $target = null;
-        $profile = $request->user()->profile;
-        $weightKg = $request->user()->latestWeightKg();
+        $profile = $user->profile;
+        $weightKg = $user->latestWeightKg();
         if ($profile && $weightKg !== null) {
             $summary = $calculator->summary($profile, $weightKg);
             $target = ['kcal' => $summary['target_kcal'], 'macros' => $summary['macros']];
         }
 
         return response()->json([
-            'date' => $date->toDateString(),
-            'entries' => $entries->groupBy('meal'),
-            'totals' => $totals,
-            'target' => $target,
+            'data' => [
+                'date' => $date->toDateString(),
+                'timezone' => LocalDay::timezone($user, $request->query('timezone')),
+                'entries' => $entries->groupBy(fn ($entry) => $entry->meal->value),
+                'totals' => $totals,
+                'target' => $target,
+            ],
         ]);
     }
 
     public function store(StoreFoodLogRequest $request)
     {
         $data = $request->validated();
+        $user = $request->user();
         $food = Food::findOrFail($data['food_id']);
         $quantity = (float) ($data['quantity'] ?? 1);
 
@@ -62,11 +76,11 @@ class FoodLogController extends Controller
 
         $nutrients = $food->nutrientsForGrams($grams);
 
-        $entry = $request->user()->foodLogEntries()->create([
+        $entry = $user->foodLogEntries()->create([
             'food_id' => $food->id,
             'food_portion_id' => $portion?->id,
             'meal' => $data['meal'],
-            'consumed_on' => $data['consumed_on'] ?? today(),
+            'consumed_on' => $data['consumed_on'] ?? LocalDay::today($user, $data['timezone'] ?? null),
             'quantity' => $quantity,
             'grams' => round($grams, 2),
             ...$nutrients,

@@ -2,26 +2,14 @@
 
 namespace App\Models;
 
+use App\Enums\ActivityLevel;
+use App\Enums\Goal;
+use App\Enums\Sex;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Profile extends Model
 {
-    public const SEXES = ['male', 'female'];
-
-    public const ACTIVITY_LEVELS = ['sedentary', 'light', 'moderate', 'active', 'very_active'];
-
-    public const GOALS = ['lose', 'maintain', 'gain'];
-
-    /** Multiplicadores sobre el BMR para estimar el TDEE (gasto total diario). */
-    public const ACTIVITY_FACTORS = [
-        'sedentary' => 1.2,
-        'light' => 1.375,
-        'moderate' => 1.55,
-        'active' => 1.725,
-        'very_active' => 1.9,
-    ];
-
     protected $fillable = [
         'sex',
         'birthdate',
@@ -30,13 +18,17 @@ class Profile extends Model
         'goal',
         'goal_rate_kg_per_week',
         'locale',
+        'timezone',
     ];
 
     protected function casts(): array
     {
         return [
+            'sex' => Sex::class,
             'birthdate' => 'date',
             'height_cm' => 'float',
+            'activity_level' => ActivityLevel::class,
+            'goal' => Goal::class,
             'goal_rate_kg_per_week' => 'float',
         ];
     }
@@ -53,6 +45,6 @@ class Profile extends Model
 
     public function activityFactor(): float
     {
-        return self::ACTIVITY_FACTORS[$this->activity_level] ?? 1.55;
+        return $this->activity_level->factor();
     }
 }

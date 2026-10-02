@@ -2,6 +2,7 @@
 
 namespace App\Services\Nutrition;
 
+use App\Enums\LookupStatus;
 use App\Jobs\ResolveFoodLookup;
 use App\Models\AiFoodLookup;
 use App\Models\Food;
@@ -33,7 +34,7 @@ class FoodResolver
 
         $lookup = $this->pendingOrRecentLookup($query, $user);
 
-        if ($lookup->status === 'done' && $lookup->food) {
+        if ($lookup->status === LookupStatus::Done && $lookup->food) {
             return ['status' => 'found', 'food' => $lookup->food, 'lookup_id' => $lookup->id];
         }
 

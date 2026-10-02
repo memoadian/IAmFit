@@ -55,12 +55,12 @@ class TrainingAdviceService
 
         return [
             'perfil' => $profile ? [
-                'sexo' => $profile->sex,
+                'sexo' => $profile->sex->value,
                 'edad' => $profile->ageYears(),
                 'estatura_cm' => $profile->height_cm,
                 'peso_kg' => $weightKg,
-                'nivel_actividad' => $profile->activity_level,
-                'objetivo' => $profile->goal,
+                'nivel_actividad' => $profile->activity_level->value,
+                'objetivo' => $profile->goal->value,
             ] : null,
             'rutina' => [
                 'nombre' => $routine->name,

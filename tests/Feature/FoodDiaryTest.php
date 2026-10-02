@@ -26,9 +26,9 @@ class FoodDiaryTest extends TestCase
 
         $this->actingAs($user)->getJson('/api/foods/search?q=pechuga+de+pollo')
             ->assertOk()
-            ->assertJsonPath('status', 'found')
-            ->assertJsonPath('food.id', $food->id)
-            ->assertJsonPath('food.per_100g.protein_g', 31);
+            ->assertJsonPath('data.status', 'found')
+            ->assertJsonPath('data.food.id', $food->id)
+            ->assertJsonPath('data.food.per_100g.protein_g', 31);
     }
 
     public function test_unknown_food_queues_an_enrichment_lookup(): void
@@ -38,9 +38,9 @@ class FoodDiaryTest extends TestCase
 
         $response = $this->actingAs($user)->getJson('/api/foods/search?q=tlacoyo+de+haba')
             ->assertStatus(202)
-            ->assertJsonPath('status', 'pending');
+            ->assertJsonPath('data.status', 'pending');
 
-        $lookupId = $response->json('lookup_id');
+        $lookupId = $response->json('data.lookup_id');
         $this->assertDatabaseHas('ai_food_lookups', ['id' => $lookupId, 'status' => 'pending']);
         Queue::assertPushed(ResolveFoodLookup::class);
     }
@@ -71,6 +71,6 @@ class FoodDiaryTest extends TestCase
 
         $this->actingAs($user)->getJson('/api/diary')
             ->assertOk()
-            ->assertJsonPath('totals.kcal', 410.8);
+            ->assertJsonPath('data.totals.kcal', 410.8);
     }
 }

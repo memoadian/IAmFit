@@ -10,7 +10,7 @@ use App\Services\Nutrition\NutritionFacts;
  */
 interface NutritionSource
 {
-    /** Identificador corto, coincide con Food::SOURCES (p. ej. "off"). */
+    /** Identificador corto, coincide con FoodSource (p. ej. "off"). */
     public function key(): string;
 
     /** true si está configurada y disponible (p. ej. tiene API key). */

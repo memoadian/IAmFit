@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
+use App\Enums\WeightSource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BodyWeightEntry extends Model
 {
-    public const SOURCES = ['manual', 'scale', 'import'];
-
     protected $fillable = [
         'user_id',
         'weight_kg',
@@ -22,6 +21,7 @@ class BodyWeightEntry extends Model
         return [
             'weight_kg' => 'float',
             'measured_on' => 'date',
+            'source' => WeightSource::class,
         ];
     }
 

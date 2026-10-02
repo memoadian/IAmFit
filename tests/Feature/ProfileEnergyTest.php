@@ -29,16 +29,16 @@ class ProfileEnergyTest extends TestCase
             'goal' => 'lose',
             'goal_rate_kg_per_week' => -0.5,
             'weight_kg' => 82,
-        ])->assertOk()->assertJsonPath('latest_weight_kg', 82);
+        ])->assertOk()->assertJsonPath('data.latest_weight_kg', 82);
 
         $this->assertDatabaseHas('profiles', ['user_id' => $user->id, 'goal' => 'lose']);
         $this->assertDatabaseHas('body_weight_entries', ['user_id' => $user->id, 'weight_kg' => 82]);
 
         $summary = $this->actingAs($user)->getJson('/api/energy')->assertOk()->json();
 
-        $this->assertGreaterThan(1400, $summary['bmr']);
-        $this->assertGreaterThan($summary['bmr'], $summary['tdee']);
-        $this->assertLessThan($summary['tdee'], $summary['target_kcal']);
-        $this->assertArrayHasKey('protein_g', $summary['macros']);
+        $this->assertGreaterThan(1400, $summary['data']['bmr']);
+        $this->assertGreaterThan($summary['data']['bmr'], $summary['data']['tdee']);
+        $this->assertLessThan($summary['data']['tdee'], $summary['data']['target_kcal']);
+        $this->assertArrayHasKey('protein_g', $summary['data']['macros']);
     }
 }
