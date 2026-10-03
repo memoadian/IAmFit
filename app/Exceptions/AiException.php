@@ -9,7 +9,7 @@ use Throwable;
  * Separa el detalle interno (para logs) del mensaje seguro que se puede mostrar
  * al usuario, para nunca relayar respuestas crudas del proveedor de IA.
  *
- * Portado de inmuebles (allí `AiExtractionException`).
+ * Separa el mensaje interno del que sí puede ver el usuario.
  */
 class AiException extends RuntimeException
 {

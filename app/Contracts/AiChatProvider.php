@@ -11,7 +11,7 @@ use App\Services\Ai\AiChatResult;
  * concreto. Cambiar de proveedor = una nueva implementación + rebind en el
  * service provider, sin tocar el resto de la app.
  *
- * Portado de inmuebles.
+ * El resto de la app depende de esta interfaz, no del proveedor concreto.
  */
 interface AiChatProvider
 {

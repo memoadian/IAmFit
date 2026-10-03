@@ -60,12 +60,12 @@ propias se crea un *custom theme* de Filament. Ahora mismo no hay theme a medida
 
 ## IA
 
-Portada de `inmuebles`: `App\Contracts\AiChatProvider` → `App\Services\Ai\GroqChatProvider`
+`App\Contracts\AiChatProvider` → `App\Services\Ai\GroqChatProvider`
 (Groq, `openai/gpt-oss-20b`). El bind vive en `AppServiceProvider`. Cambiar de
 proveedor = una clase nueva + cambiar el bind.
 
 ```
-GROQ_API_KEY=          # https://console.groq.com/keys (o reusa la de inmuebles)
+GROQ_API_KEY=          # https://console.groq.com/keys
 GROQ_MODEL=openai/gpt-oss-20b
 USDA_FDC_API_KEY=      # opcional, https://fdc.nal.usda.gov/api-key-signup.html
 ```

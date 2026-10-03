@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Http;
 
 /**
  * Implementación de AiChatProvider contra Groq Cloud (API compatible con OpenAI).
- * Portada de inmuebles.
+ * Implementación por defecto de `AiChatProvider`.
  */
 class GroqChatProvider implements AiChatProvider
 {
