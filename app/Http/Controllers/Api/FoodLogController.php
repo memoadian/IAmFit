@@ -39,6 +39,12 @@ class FoodLogController extends Controller
             'fat_g' => round($entries->sum('fat_g'), 1),
         ];
 
+        // Agrupado por comida. El cast a object garantiza que el contrato sea
+        // siempre un objeto JSON (`{}` cuando no hay entradas) y no un arreglo.
+        $entriesByMeal = (object) $entries
+            ->groupBy(fn ($entry) => $entry->meal->value)
+            ->all();
+
         $target = null;
         $profile = $user->profile;
         $weightKg = $user->latestWeightKg();
@@ -51,7 +57,7 @@ class FoodLogController extends Controller
             'data' => [
                 'date' => $date->toDateString(),
                 'timezone' => LocalDay::timezone($user, $request->query('timezone')),
-                'entries' => $entries->groupBy(fn ($entry) => $entry->meal->value),
+                'entries' => $entriesByMeal,
                 'totals' => $totals,
                 'target' => $target,
             ],

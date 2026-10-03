@@ -73,4 +73,16 @@ class FoodDiaryTest extends TestCase
             ->assertOk()
             ->assertJsonPath('data.totals.kcal', 410.8);
     }
+
+    public function test_diary_entries_is_an_object_even_when_there_are_no_entries(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->getJson('/api/diary')->assertOk();
+
+        $payload = json_decode($response->getContent());
+
+        $this->assertIsObject($payload->data->entries);
+        $this->assertSame(0, $payload->data->totals->kcal);
+    }
 }
