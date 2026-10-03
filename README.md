@@ -128,3 +128,7 @@ Sin `GROQ_API_KEY` el backend arranca igual; sólo se desactivan las features de
 
 Rate limits: `throttle:auth` (10/min por IP), `throttle:ai` (6/min global — Groq
 limita por organización).
+
+## Licencia
+
+MIT. Ver [LICENSE](LICENSE).
